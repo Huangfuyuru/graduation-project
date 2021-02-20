@@ -7,9 +7,9 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, count, batchNumber, times } = data;
-    let sql = 'insert into vaccines(name,count,batchNumber,times) values($1,$2,$3.$4)';
-    let ret = await pgdb.query(sql, [name, count, batchNumber, times]);
+    let { name, count, batchNumber, times,type } = data;
+    let sql = 'insert into vaccines(name,count,batchNumber,type,times) values($1,$2,$3,$4,$5)';
+    let ret = await pgdb.query(sql, [name, count, batchNumber, type,times]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -64,10 +64,10 @@ async function deleteVaccines(data) {
  * @param {Object} text
  * @returns
  */
-async function changeVaccinesById(data, id) {
-    let { name, count, batchNumber, times } = data;
-    let sql = 'update vaccines set name = $1,count=$2,batchNumber=$3,times=$4 where id = $5'
-    let ret = await pgdb.query(sql, [name, count, batchNumber, times, id]);
+async function changeVaccinesById(data) {
+    let { name, count, batchNumber, times,id,type } = data;
+    let sql = 'update vaccines set name = $1,count=$2,batchNumber=$3,times=$4 ,type=$5 where id = $6'
+    let ret = await pgdb.query(sql, [name, count, batchNumber, times, type,id]);
     if (ret.rowCount <= 0) {
         return 1
     } else {

@@ -23,14 +23,13 @@ router.use(bodyParser.json());
 // })
 
 router.post('/create', async function (req, res) {
-    let { name, count, batchNumber, times } = req.body;
-    let arr = times.map(item => item.value);
-    times = arr;
+    let { name, count, batchNumber, times,type } = req.body;
     var result = await vaccinesM.addVaccines({
         name,
         count,
         batchNumber,
-        times
+        times,
+        type
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -42,15 +41,14 @@ router.post('/create', async function (req, res) {
 
 })
 router.post('/modify', async function (req, res) {
-    let { name, count, batchNumber, times, id } = req.body;
-    let arr = times.map(item => item.value);
-    times = arr;
+    let { name, count, batchNumber, times, id,type } = req.body;
     var result = await vaccinesM.changeVaccinesById({
         name,
         count,
         batchNumber,
         times,
-        id
+        id,
+        type
     })
     if (result == 0) {
         info = { code: 0, data: result }

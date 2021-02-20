@@ -23,8 +23,8 @@ router.use(bodyParser.json());
 // })
 
 router.get('/detail', async function (req, res) {
-    var result = await vaccinesM.getAllVaccines()
-    if (result == 0) {
+    var result = await timesM.getAllTimes()
+    if (result !== 0) {
         info = { code: 0, data: result }
         res.json(info)
     } else {

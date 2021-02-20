@@ -1,7 +1,7 @@
 const express = require('express'),
     app = express(),
     vaccines = require('./routes/vaccines');
-//      times = require('./routes/times')
+      times = require('./routes/times')
 //   login = require('./routes/login'), //登陆
 //   resign =require('./routes/register')  //注册
 

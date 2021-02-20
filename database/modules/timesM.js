@@ -9,6 +9,7 @@ const pgdb = require('./connect');
 async function getAllTimes(data) {
     let sql = 'select * from times';
     let ret = await pgdb.query(sql);
+    //console.log(ret.rows)
     if (ret.rowCount <= 0) {
         return 1;
     } else {
