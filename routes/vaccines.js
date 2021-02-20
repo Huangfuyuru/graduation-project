@@ -22,8 +22,9 @@ router.use(bodyParser.json());
 //     res.json(message);
 // })
 
-router.post('/vaccines/create',async function(req,res){
-    let {name,count,batchNumber,times} = req.body;
+router.post('/create',async function(req,res){
+    console.log('vaccines-create',req.body)
+    /*let {name,count,batchNumber,times} = req.body;
     let arr = times.map(item=>item.value);
     times = arr;
     var result = await vaccinesM.addVaccines({
@@ -39,6 +40,10 @@ router.post('/vaccines/create',async function(req,res){
         info = {code:1,msg:"添加失败",data:null};
         res.json(info)
     }
+    */
+})
+router.get('/detail',async function(req,res){
+    console.log('/vaccines/detail')
 })
 
 module.exports = router;

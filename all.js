@@ -1,7 +1,7 @@
 const express = require('express'),
       app = express(),
-      vaccines = require('./routes/vaccines'),
-      times = require('./routes/times')
+      vaccines = require('./routes/vaccines');
+//      times = require('./routes/times')
     //   login = require('./routes/login'), //登陆
     //   resign =require('./routes/register')  //注册
       
@@ -17,7 +17,7 @@ app.all('*', function (req, res, next) {
 // app.use('/login',login);
 // app.use('/resign',resign);
 app.use('/vaccines',vaccines);
-app.use('/times',times);
+//app.use('/times',times);
 app.listen(3001);
 
 
