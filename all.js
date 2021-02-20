@@ -1,7 +1,9 @@
 const express = require('express'),
       app = express(),
-      login = require('./routes/login'), //登陆
-      resign =require('./routes/register')  //注册
+      vaccines = require('./routes/vaccines'),
+      times = require('./routes/times')
+    //   login = require('./routes/login'), //登陆
+    //   resign =require('./routes/register')  //注册
       
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -12,8 +14,10 @@ app.all('*', function (req, res, next) {
 });
 
 //路由模块
-app.use('/login',login);
-app.use('/resign',resign);
+// app.use('/login',login);
+// app.use('/resign',resign);
+app.use('/vaccines',vaccines);
+app.use('/times',times);
 app.listen(3001);
 
 

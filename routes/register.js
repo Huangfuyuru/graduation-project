@@ -37,7 +37,7 @@ router.post('/email',async function(req,res,next){
             subject:'记得APP验证码',
             //收件人
             to:req.body.email,
-            text:'【记得】验证码: '+code+',您当前正在注册记得,十分钟内有效，请勿泄露给他人。'
+            text:'【儿童疫苗管理系统】验证码: '+code+',您当前正在注册记得,十分钟内有效，请勿泄露给他人。'
         }
         tcode = code;
         console.log('tcode',tcode)
