@@ -1,7 +1,7 @@
-const userM = require('./modules/userM');
-const userM = require('./modules/vaccinesM');
+//const userM = require('./modules/userM');
+const vaccinesM = require('./modules/vaccinesM');
 var data = {
-    userM,
+  //  userM,
     vaccinesM
 }
 module.exports = data;

@@ -22,7 +22,7 @@ router.use(bodyParser.json());
 //     res.json(message);
 // })
 
-router.post('/vaccines/create',function(req,res){
+router.post('/vaccines/create',async function(req,res){
     let {name,count,batchNumber,times} = req.body;
     let arr = times.map(item=>item.value);
     times = arr;
