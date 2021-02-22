@@ -7,9 +7,9 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate } = data;
-    let sql = 'insert into vaccines(name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate ) values($1,$2,$3,$4,$5,$6,$7,$8,$9)';
-    let ret = await pgdb.query(sql, [name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate]);
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber} = data;
+    let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchNumber) values($1,$2,$3,$4,$5,$6,$7)';
+    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchNumber]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -79,9 +79,9 @@ async function deleteVaccines(data) {
  * @returns
  */
 async function changeVaccinesById(data) {
-    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, id } = data;
-    let sql = 'update vaccines set name=$1,fixedvaccines=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchNumber=$7 where id = $6'
-    let ret = await pgdb.query(sql, [name, fixedvaccines, company, deadline, count, setdate, batchNumber, id]);
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, id } = data;
+    let sql = 'update vaccines set name=$1,fixedvaccinesid=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchNumber=$7 where id = $6'
+    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, id]);
     if (ret.rowCount <= 0) {
         return 1
     } else {
