@@ -7,9 +7,9 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, count, batchNumber, times,type } = data;
-    let sql = 'insert into vaccines(name,count,batchNumber,type,times) values($1,$2,$3,$4,$5)';
-    let ret = await pgdb.query(sql, [name, count, batchNumber, type,times]);
+    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate } = data;
+    let sql = 'insert into vaccines(name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate ) values($1,$2,$3,$4,$5,$6,$7,$8,$9)';
+    let ret = await pgdb.query(sql, [name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -41,15 +41,29 @@ async function getAllVaccines(data) {
 }
 
 /**
- * 删除疫苗
+ * 获取所有固定疫苗信息
+ * @param {Object} person 
+ */
+async function getFixedVaccines() {
+    let sql = 'select * from fixedvaccines';
+    let ret = await pgdb.query(sql);
+    if (ret.rowCount <= 0) {
+        return 1;
+    } else {
+        return ret.rows;
+    }
+}
+
+/**
+ * 下架疫苗
  * 如果增加成功，返回0
  * 增加不成功，返回1
  * @param {Object} person 
  */
 async function deleteVaccines(data) {
-    let { id } = data;
-    let sql = 'delete from vaccines where id=$1';
-    let ret = await pgdb.query(sql, [id]);
+    let { id, outdate } = data;
+    let sql = 'update vaccines set isExist=false,outdate = $1 where id = $2';
+    let ret = await pgdb.query(sql, [outdate, id]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -65,9 +79,9 @@ async function deleteVaccines(data) {
  * @returns
  */
 async function changeVaccinesById(data) {
-    let { name, count, batchNumber, times,id,type } = data;
-    let sql = 'update vaccines set name = $1,count=$2,batchNumber=$3,times=$4 ,type=$5 where id = $6'
-    let ret = await pgdb.query(sql, [name, count, batchNumber, times, type,id]);
+    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, id } = data;
+    let sql = 'update vaccines set name=$1,fixedvaccines=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchNumber=$7 where id = $6'
+    let ret = await pgdb.query(sql, [name, fixedvaccines, company, deadline, count, setdate, batchNumber, id]);
     if (ret.rowCount <= 0) {
         return 1
     } else {
@@ -76,6 +90,6 @@ async function changeVaccinesById(data) {
 }
 
 var vaccinesM = {
-    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById
+    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines
 }
 module.exports = vaccinesM;

@@ -23,13 +23,9 @@ router.use(bodyParser.json());
 // })
 
 router.post('/create', async function (req, res) {
-    let { name, count, batchNumber, times,type } = req.body;
+    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate } = req.body;
     var result = await vaccinesM.addVaccines({
-        name,
-        count,
-        batchNumber,
-        times,
-        type
+        name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -41,14 +37,9 @@ router.post('/create', async function (req, res) {
 
 })
 router.post('/modify', async function (req, res) {
-    let { name, count, batchNumber, times, id,type } = req.body;
+    let { name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate, id } = req.body;
     var result = await vaccinesM.changeVaccinesById({
-        name,
-        count,
-        batchNumber,
-        times,
-        id,
-        type
+        name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate, id
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -76,11 +67,23 @@ router.get('/detail', async function (req, res) {
 })
 
 router.post('/delete', async function (req, res) {
-    const { id } = req.body;
+    const { id, outdate } = req.body;
     var result = await vaccinesM.deleteVaccines({
-        id
+        id, outdate
     })
     if (result == 0) {
+        info = { code: 0, data: result }
+        res.json(info)
+    } else {
+        info = { code: 1, data: null };
+        res.json(info)
+    }
+})
+
+router.get('/fixedvaccines', async function (req, res) {
+    var result = await vaccinesM.getFixedVaccines()
+
+    if (result !== 0) {
         info = { code: 0, data: result }
         res.json(info)
     } else {
