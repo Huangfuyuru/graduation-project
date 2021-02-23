@@ -9,7 +9,8 @@ router.use(bodyParser.json());
 
 router.post('/users', async function (req, res, next) {
     let { account, pass } = req.body;
-    var getUser = await userM.findeaccount(account);
+    console.log(account,pass)
+    var getUser = await userM.findaccount(account);
     if (getUser == 0) {
         var message = { code: 1, data: null, msg: "该账号未注册，请先注册" }
     } else {

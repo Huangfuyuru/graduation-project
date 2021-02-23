@@ -10,9 +10,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/create', async function (req, res) {
-    let { name, account, pass, tel, unit, type } = req.body;
+    let { name,birthday,identitycard,gender,familyname,tel,comment,address } = req.body;
     var result = await childsM.addChilds({
-        name, account, pass, tel, unit, type
+        name, birthday,identitycard,gender,familyname,tel,comment,address
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -25,9 +25,9 @@ router.post('/create', async function (req, res) {
 })
 
 router.post('/modify', async function (req, res) {
-    let { id, name, account, pass, tel, unit, type } = req.body;
+    let { id, name,birthday,identitycard,gender,familyname,tel,comment,address } = req.body;
     var result = await childsM.changeChildsById({
-        id, name, account, pass, tel, unit, type
+        id, name,birthday,identitycard,gender,familyname,tel,comment,address
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -40,17 +40,18 @@ router.post('/modify', async function (req, res) {
 })
 
 router.post('/detail', async function (req, res) {
-    const { pageIndex, pageSize, name = '' } = req.body;
+    const { pageindex, pagesize, name = '' } = req.body;
     var result = await childsM.getAllChilds({
-        pageIndex,
-        pageSize,
+        pageindex,
+        pagesize,
         name
     })
-    if (result == 0) {
-        info = { code: 0, data: result }
+    console.log(result);
+    if (result !==1 ) {
+        info = { code: 0, data: result.data,pagetotal:result.pagetotal }
         res.json(info)
     } else {
-        info = { code: 1, data: null };
+        info = { code: 1, data: null,pagetotal:null };
         res.json(info)
     }
 })

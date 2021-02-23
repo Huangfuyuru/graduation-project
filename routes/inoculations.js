@@ -10,9 +10,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/create', async function (req, res) {
-    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate } = req.body;
+    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,zz } = req.body;
     var result = await inoculationsM.addInoculations({
-        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate
+        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,zz
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -24,9 +24,9 @@ router.post('/create', async function (req, res) {
 
 })
 router.post('/modify', async function (req, res) {
-    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id } = req.body;
+    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id,zz } = req.body;
     var result = await inoculationsM.changeInoculationsById({
-        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id
+        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id,zz
     })
     if (result == 0) {
         info = { code: 0, data: result }

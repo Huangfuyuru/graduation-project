@@ -7,9 +7,9 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber } = data;
-    let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchNumber) values($1,$2,$3,$4,$5,$6,$7)';
-    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchNumber]);
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber } = data;
+    let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchnumber) values($1,$2,$3,$4,$5,$6,$7)';
+    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchnumber]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -24,19 +24,27 @@ async function addVaccines(data) {
  * @param {Object} person 
  */
 async function getAllVaccines(data) {
-    const { pageIndex, pageSize, name } = data;
-    let sql, ret;
+    let { pageindex, pagesize, name } = data;
+    pageindex = Number(pageindex);
+    pagesize = Number(pagesize);
+    pageindex = pagesize*(pageindex-1);
+    let sql, ret,sql1,ret1;
     if (name === '') {
-        sql = 'select * from vaccines limit $1 offset $2';
-        ret = await pgdb.query(sql, [pageSize, pageIndex]);
+        sql = 'select * from vaccines order by id limit $1 offset $2';
+        sql1 = 'select count(*) from vaccines';
+        ret = await pgdb.query(sql, [pagesize, pageindex]);
+        ret1 = await pgdb.query(sql1);
     } else {
-        sql = 'select * from vaccines limit $1 offset $2 where name = $3';
-        ret = await pgdb.query(sql, [pageSize, pageIndex]);
+        sql = 'select * from vaccines where name =$1 order by id limit $2 offset $3';
+        sql1 = 'select count(*) from vaccines where name = $1';
+        ret = await pgdb.query(sql, [pagesize, pageindex]);
+        ret1 = await pgdb.query(sql1,[name]);
     }
+    //console.log(ret)
     if (ret.rowCount <= 0) {
         return 1;
     } else {
-        return ret.rows;
+        return {data:ret.rows,pagetotal:ret1.rows[0].count};
     }
 }
 
@@ -62,7 +70,7 @@ async function getFixedVaccines() {
  */
 async function deleteVaccines(data) {
     let { id, outdate } = data;
-    let sql = 'update vaccines set isExist=false,outdate = $1 where id = $2';
+    let sql = 'update vaccines set isexist=false,outdate = $1 where id = $2';
     let ret = await pgdb.query(sql, [outdate, id]);
     if (ret.rowCount <= 0) {
         return 1;
@@ -79,9 +87,9 @@ async function deleteVaccines(data) {
  * @returns
  */
 async function changeVaccinesById(data) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, id } = data;
-    let sql = 'update vaccines set name=$1,fixedvaccinesid=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchNumber=$7 where id = $6'
-    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, id]);
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, id } = data;
+    let sql = 'update vaccines set name=$1,fixedvaccinesid=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchnumber=$7 where id = $6'
+    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, id]);
     if (ret.rowCount <= 0) {
         return 1
     } else {
@@ -104,16 +112,13 @@ async function getCount(account, pass) {
     let retUsers = await pgdb.query(sqlUsers);
     let retVaccines = await pgdb.query(sqlVaccines);
     let retChilds = await pgdb.query(sqlChilds);
-
-    if (retUsers.rowCount <= 0 && retVaccines.rowCount <= 0 && retChilds.rowCount <= 0) {
-        return 1;
-    } else {
-        return {
-            users: retUsers.row[0],
-            childs: retChilds.row[0],
-            vaccines: retVaccines.row[0]
+        let d = {
+          users:retUsers.rows[0].count,
+          childs: retChilds.rows[0].count,
+          vaccines: retVaccines.rows[0].count
         }
-    }
+        return d
+    
 }
 var vaccinesM = {
     addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines, getCount

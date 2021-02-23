@@ -37,9 +37,9 @@ router.post('/create', async function (req, res) {
 
 })
 router.post('/modify', async function (req, res) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, isExist, outdate, id } = req.body;
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate, id } = req.body;
     var result = await vaccinesM.changeVaccinesById({
-        name, fixedvaccines, company, deadline, count, setdate, batchNumber, isExist, outdate, id
+        name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate, id
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -50,18 +50,19 @@ router.post('/modify', async function (req, res) {
     }
 
 })
-router.get('/detail', async function (req, res) {
-    const { pageIndex, pageSize, name = '' } = req.body;
+router.post('/detail', async function (req, res) {
+    const { pageindex, pagesize, name = '' } = req.body;
+    console.log(pageindex)
     var result = await vaccinesM.getAllVaccines({
-        pageIndex,
-        pageSize,
+        pageindex,
+        pagesize,
         name
     })
-    if (result == 0) {
-        info = { code: 0, data: result }
+    if (result !== 1) {
+        info = { code: 0, data: result.data,pagetotal:result.pagetotal }
         res.json(info)
     } else {
-        info = { code: 1, data: null };
+        info = { code: 1, data: null,pagetotal:null };
         res.json(info)
     }
 })
