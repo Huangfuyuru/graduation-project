@@ -92,6 +92,16 @@ router.get('/fixedvaccines', async function (req, res) {
     }
 })
 
+router.get('/count', async function (req, res) {
+    var result = await vaccinesM.getCount();
+    if (result !== 0) {
+        info = { code: 0, data: result }
+        res.json(info)
+    } else {
+        info = { code: 1, data: null };
+        res.json(info)
+    }
+})
 
 
 module.exports = router;

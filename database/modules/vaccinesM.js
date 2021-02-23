@@ -7,7 +7,7 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber} = data;
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber } = data;
     let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchNumber) values($1,$2,$3,$4,$5,$6,$7)';
     let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchNumber]);
     if (ret.rowCount <= 0) {
@@ -89,7 +89,33 @@ async function changeVaccinesById(data) {
     }
 }
 
+/**
+ * 获得count
+ * 不存在返回null,存在返回用户数据
+ * @param {string} account 
+ * @param {string} pass
+ * @return {Object} 是一个对象，具体参数参照数据表  
+ */
+
+async function getCount(account, pass) {
+    let sqlUsers = 'select count(*) from users';
+    let sqlVaccines = 'select count(*) from vaccines';
+    let sqlChilds = 'select count(*) from childs';
+    let retUsers = await pgdb.query(sqlUsers);
+    let retVaccines = await pgdb.query(sqlVaccines);
+    let retChilds = await pgdb.query(sqlChilds);
+
+    if (retUsers.rowCount <= 0 && retVaccines.rowCount <= 0 && retChilds.rowCount <= 0) {
+        return 1;
+    } else {
+        return {
+            users: retUsers.row[0],
+            childs: retChilds.row[0],
+            vaccines: retVaccines.row[0]
+        }
+    }
+}
 var vaccinesM = {
-    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines
+    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines, getCount
 }
 module.exports = vaccinesM;
