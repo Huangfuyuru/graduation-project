@@ -23,9 +23,9 @@ router.use(bodyParser.json());
 // })
 
 router.post('/create', async function (req, res) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, isExist, outdate } = req.body;
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate } = req.body;
     var result = await vaccinesM.addVaccines({
-        name, fixedvaccinesid, company, deadline, count, setdate, batchNumber, isExist, outdate
+        name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -59,10 +59,10 @@ router.post('/detail', async function (req, res) {
         name
     })
     if (result !== 1) {
-        info = { code: 0, data: result.data,pagetotal:result.pagetotal }
+        info = { code: 0, data: result.data, pagetotal: result.pagetotal }
         res.json(info)
     } else {
-        info = { code: 1, data: null,pagetotal:null };
+        info = { code: 1, data: null, pagetotal: null };
         res.json(info)
     }
 })

@@ -1,14 +1,5 @@
 const pgdb = require('./connect');
 
-// 成功返回0或数据  失败返回1
-/**
- * 传入邮箱、密码，验证用户是否存在
- * 不存在返回null,存在返回用户数据
- * @param {string} account 
- * @param {string} pass
- * @return {Object} 是一个对象，具体参数参照数据表  
- */
-
 async function login(account, pass) {
     let sql = 'select * from users where account = $1 and pass = $2';
     let ret = await pgdb.query(sql, [account, pass]);
@@ -19,12 +10,6 @@ async function login(account, pass) {
     }
 }
 
-
-/**
- * 验证是否已经注册
- * 传入account，如何account存在，返回1，不存在返回0
- * @param {String} account 
- */
 async function findaccount(account) {
     let sql = 'select * from users where account = $1';
     let ret = await pgdb.query(sql, [account]);
@@ -42,8 +27,9 @@ async function findaccount(account) {
  * @param {Object} person 
  */
 async function addUser(person) {
-    let sql = 'insert into users(pass,account,name) values($1,$2,$3)';
-    let ret = await pgdb.query(sql, [person.pass, person.account, person.name]);
+    const { name, account, pass, type, unit } = person;
+    let sql = 'insert into users(name,account,pass,type,unit,tel) values($1,$2,$3,$4,$5,$6)';
+    let ret = await pgdb.query(sql, [name, account, pass, type, unit, tel]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
