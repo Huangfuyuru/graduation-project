@@ -3,13 +3,11 @@ const express = require('express'),
     bodyParser = require("body-parser");
 const { userM } = require("../database/dateMethod");//引入数据库
 const fs = require('fs');
-//配置bodyparser中间件
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/users', async function (req, res, next) {
+router.post('/login', async function (req, res) {
     let { account, pass } = req.body;
-    console.log(account,pass)
     var getUser = await userM.findaccount(account);
     if (getUser == 0) {
         var message = { code: 1, data: null, msg: "该账号未注册，请先注册" }
@@ -22,14 +20,42 @@ router.post('/users', async function (req, res, next) {
         }
     }
     res.json(message)
-})
+});
 
-//测试
-// router.get('/',function(req,res,next){ 
-//     var fileContent = fs.readFileSync(`E:\\fight_blink\\wechat-group\\back-end\\app-hf.html`);
-//     res.writeHead(200, {"Content-Type":"text/html"});
-//     res.end(fileContent);
-// })
+router.post('/delete', async function (req, res) {
+    const { id } = req.body;
+    const result = await userM.delUser(id);
+    const message = {};
+    if (result) {
+        message = {
+            code: 1,
+            msg: '删除失败'
+        }
+    } else {
+        message = {
+            code: 0,
+            msg: '删除成功'
+        }
+    }
+    res.json(message)
+});
+
+router.post('/modify', async function (req, res) {
+    const result = await userM.changeById(req.body);
+    const message = {};
+    if (result) {
+        message = {
+            code: 1,
+            msg: '修改失败'
+        }
+    } else {
+        message = {
+            code: 0,
+            msg: '修改成功'
+        }
+    }
+    res.json(message)
+})
 
 module.exports = router;
 

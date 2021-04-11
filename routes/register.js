@@ -20,7 +20,6 @@ router.use(bodyParser.json());
 //发送验证码
 
 router.post('/code', async function (req, res, next) {
-
     var code = createCode();
     //查看是否注册过，可注册：0；不可：1
     var result = await userM.findaccount(req.body.account);
@@ -50,16 +49,14 @@ router.post('/code', async function (req, res, next) {
 //点击注册
 router.post('/create', async function (req, res, next) {
     const { name, account, pass, type, unit, tel, confirmcode } = req.body;
-
-    var result = await userM.findemail(account);
-
+    const result = await userM.findaccount(account);
     if (result === 0) {
         var now = (new Date()).getTime();
         if (confirmcode == tcode && now - time <= 600000) {
-            var person = {
-                name, account, pass, type, unit
+            const person = {
+                name, account, pass, type, unit, tel
             };
-            var add = await userM.addUser(person);
+            const add = await userM.addUser(person);
             if (add === 0) {
                 info = {
                     code: 0,
@@ -85,9 +82,7 @@ router.post('/create', async function (req, res, next) {
             msg: '该邮箱已注册过'
         }
     }
-
     res.json(info);
-
 });
 
 

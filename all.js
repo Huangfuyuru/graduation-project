@@ -3,8 +3,8 @@ const express = require('express'),
     childs = require('./routes/childs'),
     inoculations = require('./routes/inoculations'),
     vaccines = require('./routes/vaccines'),
-    login = require('./routes/login'), //登陆
-    resign = require('./routes/register');  //注册
+    users = require('./routes/users'), //登陆
+    register = require('./routes/register');  //注册
 
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -15,8 +15,8 @@ app.all('*', function (req, res, next) {
 });
 
 //路由模块
-app.use('/login', login);
-app.use('/resign', resign);
+app.use('/users', users);
+app.use('/register', register);
 app.use('/vaccines', vaccines);
 app.use('/childs', childs);
 app.use('/inoculations', inoculations)
