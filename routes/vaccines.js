@@ -51,13 +51,7 @@ router.post('/modify', async function (req, res) {
 
 })
 router.post('/detail', async function (req, res) {
-    const { pageindex, pagesize, name = '' } = req.body;
-    console.log(pageindex)
-    var result = await vaccinesM.getAllVaccines({
-        pageindex,
-        pagesize,
-        name
-    })
+    var result = await vaccinesM.getAllVaccines(req.body);
     if (result !== 1) {
         info = { code: 0, data: result.data, pagetotal: result.pagetotal }
         res.json(info)

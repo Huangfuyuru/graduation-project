@@ -6,7 +6,7 @@ const config = {
     port: 465,
     auth: {
         user: '864134710@qq.com',
-        pass: '15930300511hf'
+        pass: 'bbhqvoslvfwwbfai'
     }
 };
 

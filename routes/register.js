@@ -31,11 +31,12 @@ router.post('/code', async function (req, res, next) {
         var mail = {
             from: '864134710@qq.com.com',
             subject: '疫苗接种管理系统验证码',
-            to: req.body.email,
+            to: req.body.account,
             text: '【疫苗接种管理系统】验证码: ' + code + ',您当前正在注册记得,十分钟内有效，请勿泄露给他人。'
         }
         tcode = code;
         time = (new Date()).getTime();
+        cons
         await nodemail(mail);
     } else {
         info = {

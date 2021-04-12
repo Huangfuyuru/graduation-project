@@ -37,7 +37,7 @@ async function getAllVaccines(data) {
     } else {
         sql = 'select * from vaccines where name =$1 order by id limit $2 offset $3';
         sql1 = 'select count(*) from vaccines where name = $1';
-        ret = await pgdb.query(sql, [pagesize, pageindex]);
+        ret = await pgdb.query(sql, [name,pagesize, pageindex]);
         ret1 = await pgdb.query(sql1,[name]);
     }
     //console.log(ret)
@@ -88,7 +88,7 @@ async function deleteVaccines(data) {
  */
 async function changeVaccinesById(data) {
     let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, id } = data;
-    let sql = 'update vaccines set name=$1,fixedvaccinesid=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchnumber=$7 where id = $6'
+    let sql = 'update vaccines set name=$1,fixedvaccinesid=$2,company=$3,deadline=$4,count=$5,setdate=$6,batchnumber=$7 where id = $8'
     let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, id]);
     if (ret.rowCount <= 0) {
         return 1
