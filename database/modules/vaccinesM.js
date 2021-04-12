@@ -24,27 +24,35 @@ async function addVaccines(data) {
  * @param {Object} person 
  */
 async function getAllVaccines(data) {
-    let { pageindex, pagesize, name } = data;
+    let { pageindex = 0, pagesize = 0, name = '', fixedvaccinesid = '' } = data;
     pageindex = Number(pageindex);
     pagesize = Number(pagesize);
-    pageindex = pagesize*(pageindex-1);
-    let sql, ret,sql1,ret1;
-    if (name === '') {
-        sql = 'select * from vaccines order by id limit $1 offset $2';
-        sql1 = 'select count(*) from vaccines';
-        ret = await pgdb.query(sql, [pagesize, pageindex]);
-        ret1 = await pgdb.query(sql1);
+    pageindex = pagesize * (pageindex - 1);
+    let sql, ret, sql1, ret1;
+    if (fixedvaccinesid) {
+        sql = 'select * from vaccines where fixedvaccinesid = $1';
+        ret = await pgdb.query(sql, [fixedvaccinesid]);
     } else {
-        sql = 'select * from vaccines where name =$1 order by id limit $2 offset $3';
-        sql1 = 'select count(*) from vaccines where name = $1';
-        ret = await pgdb.query(sql, [name,pagesize, pageindex]);
-        ret1 = await pgdb.query(sql1,[name]);
+        if (name === '') {
+            sql = 'select * from vaccines order by id limit $1 offset $2';
+            sql1 = 'select count(*) from vaccines';
+            ret = await pgdb.query(sql, [pagesize, pageindex]);
+            ret1 = await pgdb.query(sql1);
+        } else {
+            sql = 'select * from vaccines where name =$1 order by id limit $2 offset $3';
+            sql1 = 'select count(*) from vaccines where name = $1';
+            ret = await pgdb.query(sql, [name, pagesize, pageindex]);
+            ret1 = await pgdb.query(sql1, [name]);
+        }
     }
-    //console.log(ret)
+
     if (ret.rowCount <= 0) {
         return 1;
     } else {
-        return {data:ret.rows,pagetotal:ret1.rows[0].count};
+        if (fixedvaccinesid) {
+            return { data: ret.rows };
+        }
+        return { data: ret.rows, pagetotal: ret1.rows[0].count };
     }
 }
 
@@ -112,13 +120,13 @@ async function getCount(account, pass) {
     let retUsers = await pgdb.query(sqlUsers);
     let retVaccines = await pgdb.query(sqlVaccines);
     let retChilds = await pgdb.query(sqlChilds);
-        let d = {
-          users:retUsers.rows[0].count,
-          childs: retChilds.rows[0].count,
-          vaccines: retVaccines.rows[0].count
-        }
-        return d
-    
+    let d = {
+        users: retUsers.rows[0].count,
+        childs: retChilds.rows[0].count,
+        vaccines: retVaccines.rows[0].count
+    }
+    return d
+
 }
 var vaccinesM = {
     addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines, getCount
