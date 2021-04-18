@@ -8,14 +8,11 @@ const pgdb = require('./connect');
  */
 async function getAllInoculations(data) {
     let { pageindex = 0, pagesize = 0, childsname = '' } = data;
+   console.log(pagesize,pageindex)
     pagesize = Number(pagesize);
     pageindex = Number(pageindex);
     pageindex = pagesize * (pageindex - 1);
     let sql, sql1, ret, ret1;
-    if (childsname !== '') {
-        sql = 'select * from inoculations where childsname = $1';
-        ret = await pgdb.query(sql, [childsname]);
-    } else {
         if (childsname === '') {
             sql = 'select * from inoculations order by id limit $1 offset $2';
             sql1 = 'select count(*) from inoculations';
@@ -27,14 +24,11 @@ async function getAllInoculations(data) {
             sql1 = 'select count(*) from inoculations where childsname=$1';
             ret1 = await pgdb.query(sql1, [childsname]);
         }
-    }
-
+    
+    console.log(pagesize,pagesize,ret.rows)
     if (ret.rowCount <= 0) {
         return 1;
     } else {
-        if (identitycard !== '') {
-            return { data: ret.rows[0] }
-        }
         return { data: ret.rows, pagetotal: ret1.rows[0].count };
     }
 }
@@ -47,8 +41,9 @@ async function getAllInoculations(data) {
  */
 async function addInoculations(data) {
     let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, reaction } = data;
-    let sql = 'insert into inoculations(childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate，reaction) values($1,$2,$3,$4,$5,$6,$7)';
-    let ret = await pgdb.query(sql, [childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, reaction]);
+    console.log(reaction)
+    let sql = 'insert into inoculations(childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,reaction) values($1,$2,$3,$4,$5,$6,$7)';
+    let ret = await pgdb.query(sql, [childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,reaction]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {

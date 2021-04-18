@@ -23,10 +23,7 @@ router.use(bodyParser.json());
 // })
 
 router.post('/create', async function (req, res) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate } = req.body;
-    var result = await vaccinesM.addVaccines({
-        name, fixedvaccinesid, company, deadline, count, setdate, batchnumber, isexist, outdate
-    })
+    var result = await vaccinesM.addVaccines(req.body)
     if (result == 0) {
         info = { code: 0, data: result }
         res.json(info)
@@ -59,6 +56,18 @@ router.post('/detail', async function (req, res) {
         info = { code: 1, data: null, pagetotal: null };
         res.json(info)
     }
+})
+router.post('/detailone',async function(req,res){
+    var result = await vaccinesM.getOneVaccines(req.body);
+    if(result !== 1){
+      info = {code:0,data:result}
+      res.json(info)
+    }else{
+      info = {code:1,data:null};
+      res.json(info)
+
+    }
+
 })
 
 router.post('/delete', async function (req, res) {

@@ -7,7 +7,7 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function getAllChilds(data) {
-    let { pageindex = 0, pagesize = 0, name = '', identitycard } = data;
+    let { pageindex = 0, pagesize = 0, name = '', identitycard='' } = data;
     pagesize = Number(pagesize);
     pageindex = Number(pageindex);
     pageindex = pagesize * (pageindex - 1);
@@ -28,7 +28,8 @@ async function getAllChilds(data) {
             ret1 = await pgdb.query(sql1, [name]);
         }
     }
-
+    //console.log(pagesize,pageindex,name,identitycard)
+    //console.log(ret.rows)
     if (ret.rowCount <= 0) {
         return 1;
     } else {

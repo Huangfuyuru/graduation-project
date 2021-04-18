@@ -7,9 +7,9 @@ const pgdb = require('./connect');
  * @param {Object} person 
  */
 async function addVaccines(data) {
-    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber } = data;
-    let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchnumber) values($1,$2,$3,$4,$5,$6,$7)';
-    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchnumber]);
+    let { name, fixedvaccinesid, company, deadline, count, setdate, batchnumber,isexist } = data;
+    let sql = 'insert into vaccines(name, fixedvaccinesid, company, deadline, count, setdate, batchnumber,isexist) values($1,$2,$3,$4,$5,$6,$7,$8)';
+    let ret = await pgdb.query(sql, [name, fixedvaccinesid, company, deadline, count, setdate, batchnumber,isexist]);
     if (ret.rowCount <= 0) {
         return 1;
     } else {
@@ -55,7 +55,16 @@ async function getAllVaccines(data) {
         return { data: ret.rows, pagetotal: ret1.rows[0].count };
     }
 }
-
+async function getOneVaccines(data){
+  let {id} = data;
+  let sql = 'select * from vaccines where id=$1';
+  let ret = await pgdb.query(sql,[id]);
+  if(ret.rowCount<=0){
+    return 1
+  }else{
+    return ret.rows[0]
+  }
+}
 /**
  * 获取所有固定疫苗信息
  * @param {Object} person 
@@ -129,6 +138,6 @@ async function getCount(account, pass) {
 
 }
 var vaccinesM = {
-    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines, getCount
+    addVaccines, getAllVaccines, deleteVaccines, changeVaccinesById, getFixedVaccines, getCount,getOneVaccines
 }
 module.exports = vaccinesM;

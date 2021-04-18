@@ -57,6 +57,12 @@ router.post('/modify', async function (req, res) {
     res.json(message)
 })
 
+router.post('/detail',async function(req,res){
+  const result = await userM.findAll();
+  let info = {data:result,code:0};
+  res.json(info)
+})
+
 module.exports = router;
 
 
