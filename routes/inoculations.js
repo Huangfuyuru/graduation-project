@@ -10,9 +10,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/create', async function (req, res) {
-    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,zz } = req.body;
+    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, zz } = req.body;
     var result = await inoculationsM.addInoculations({
-        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate,zz
+        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, zz
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -24,9 +24,9 @@ router.post('/create', async function (req, res) {
 
 })
 router.post('/modify', async function (req, res) {
-    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id,zz } = req.body;
+    let { childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id, zz } = req.body;
     var result = await inoculationsM.changeInoculationsById({
-        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id,zz
+        childsid, childsname, vaccinesname, vaccinesid, ordinal, inoculatedate, id, zz
     })
     if (result == 0) {
         info = { code: 0, data: result }
@@ -37,21 +37,21 @@ router.post('/modify', async function (req, res) {
     }
 
 })
-// router.get('/detail', async function (req, res) {
-//     const { pageIndex, pageSize, name = '' } = req.body;
-//     var result = await vaccinesM.getAllVaccines({
-//         pageIndex,
-//         pageSize,
-//         name
-//     })
-//     if (result == 0) {
-//         info = { code: 0, data: result }
-//         res.json(info)
-//     } else {
-//         info = { code: 1, data: null };
-//         res.json(info)
-//     }
-// })
+router.get('/detail', async function (req, res) {
+    const { pageIndex, pageSize, childsname = '' } = req.body;
+    var result = await inoculationsM.getAllInoculations({
+        pageIndex,
+        pageSize,
+        childsname
+    })
+    if (result == 0) {
+        info = { code: 0, data: result }
+        res.json(info)
+    } else {
+        info = { code: 1, data: null };
+        res.json(info)
+    }
+})
 
 router.post('/delete', async function (req, res) {
     const { id } = req.body;
