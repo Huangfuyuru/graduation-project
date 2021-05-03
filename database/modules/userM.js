@@ -21,7 +21,7 @@ async function findaccount(account) {
 }
 
 async function addUser(person) {
-    const { name, account, pass, type, unit } = person;
+    const { name, account, pass, type, unit,tel } = person;
     let sql = 'insert into users(name,account,pass,type,unit,tel) values($1,$2,$3,$4,$5,$6)';
     let ret = await pgdb.query(sql, [name, account, pass, type, unit, tel]);
     if (ret.rowCount <= 0) {

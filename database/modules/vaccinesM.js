@@ -34,13 +34,13 @@ async function getAllVaccines(data) {
         ret = await pgdb.query(sql, [fixedvaccinesid]);
     } else {
         if (name === '') {
-            sql = 'select * from vaccines order by id limit $1 offset $2';
-            sql1 = 'select count(*) from vaccines';
+            sql = 'select * from vaccines order by isexist asc limit $1 offset $2';
+            sql1 = 'select count(*) from vaccines where isexist=true';
             ret = await pgdb.query(sql, [pagesize, pageindex]);
             ret1 = await pgdb.query(sql1);
         } else {
-            sql = 'select * from vaccines where name =$1 order by id limit $2 offset $3';
-            sql1 = 'select count(*) from vaccines where name = $1';
+            sql = 'select * from vaccines where name =$1 and isexist = true order by id limit $2 offset $3';
+            sql1 = 'select count(*) from vaccines where name = $1 and isexist=true';
             ret = await pgdb.query(sql, [name, pagesize, pageindex]);
             ret1 = await pgdb.query(sql1, [name]);
         }
